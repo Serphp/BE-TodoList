@@ -3,11 +3,11 @@ import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { TodoDocument } from './entities/todo.entity';
+import { Todo, TodoDocument } from './entities/todo.entity';
 
 @Injectable()
 export class TodosService {
-  constructor(@InjectModel('Todo') private todoModel: Model<TodoDocument>) {}
+  constructor(@InjectModel(Todo.name) private todoModel: Model<TodoDocument>) {}
 
   async create(createTodoDto: CreateTodoDto) {
     const todo = await new this.todoModel(createTodoDto);
@@ -44,7 +44,7 @@ export class TodosService {
   }
 
   async remove(id: string) {
-    const todo = await this.todoModel.findById(id).exec();
+    const todo = await this.todoModel.findByIdAndRemove(id).exec();
     if (!todo) {
       throw new Error('Todo not found');
     }

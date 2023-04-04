@@ -5,7 +5,6 @@ export type TodoDocument = Todo & Document;
 @Schema({
   toJSON: {
     virtuals: true,
-    versionKey: false,
     getters: true,
   },
 })
